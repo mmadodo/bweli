@@ -1,0 +1,99 @@
+<section class="section">
+  <div class="container">
+    <p class="title">Manage Buying Orders</p>
+
+    <table class="table is-fullwidth">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Seller Name</th>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% if @orders.blank? %>
+        <tr>
+          <td colspan="7" class="has-text-centered"><h3>Nothing to show</h3></td>
+        </tr>
+      <% end %>
+
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.created_at.strftime('%d %b %Y') %></td>
+          <td><%= order.seller_name %></td>
+          <td>
+            <%= link_to order.title, gig_path(order.gig) if order.gig.present? %>
+            <%= link_to order.title, request_path(order.request) if order.request.present? %>
+          </td>
+          <td><%= order.due_date.strftime('%d %b %Y') %></td>
+          <td>$<%= order.amount %></td>
+          <td>
+              <span class="tag <%= 'is-warning' if order.inprogress? %> <%= 'is-success' if order.completed? %>">
+                <%= order.status.capitalize %>
+              </span>
+
+          </td>
+          <td>
+            <%= link_to "View", order_detail_path(order), class: "button is-small is-outlined" %>
+
+            <% if order.completed? %>
+              <a href="" class="button is-small is-outlined is-danger toggle-modal" aria-control="<%= order.id %>">
+                Rating
+              </a>
+
+              <div class="modal" id="<%= order.id %>">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                  <div class="box">
+                    <%= form_for Review.new do |f| %>
+                      <%= f.hidden_field :order_id, value: order.id %>
+                      <div class="field">
+                        <div id="star_<%= order.id %>"></div>
+                      </div>
+                      <div class="field">
+                        <%= f.text_area :review, class: "textarea" %>
+                      </div>
+                      <a href="" class="toggle-modal button is-light" aria-control="<%= order.id %>">Cancel</a>
+                      <%= f.submit "Add Review", class: "button is-danger"%>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <%= link_to "Mark Complete", complete_order_path(order), class: "button is-small is-primary #{'is-hidden' if order.completed?}", method: :put %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script type="text/javascript" charset="utf-8">
+  $(".toggle-modal").on('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log(e);
+
+    var order_id = e.target.getAttribute('aria-control');
+
+    console.log('order-id: ', order_id);
+
+    $('#star_' + order_id).raty({
+      path: '/assets/raty-js/lib/images',
+      scoreName: 'review[stars]',
+      score: 1
+    });
+
+    // $('#star_' + order_id).raty('reload');
+
+    $('#' + order_id).toggleClass('is-active');
+  })
+</script>

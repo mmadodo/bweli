@@ -8,7 +8,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '285252b623237dedcf756d769f6003268fdc23bc046ca7ffbfdfa598150ffbf2535d6ad72ba1ed23d163bb7949d84388ef8d57b4a4944f80dd0bbeb5ad9358a1'
+  # config.secret_key = 'ba78ecad31c19cbf489e1265ad02ab353560b9e09bbc30c958bbf5b22ece8e7644e6387748071c08a6449836ea5c73da9fe94a5deff175da320fed73df82de55'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -114,7 +114,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'aa67e0243a203fd8188fcd5945362cabb684a13ea72fa979435b6c791abbdbdebf64a16b968ca743f54bf95dd33920650f5fb1526b61f1ff597e99e16dc3801d'
+  # config.pepper = '5f1526c0d409f249bbaff03ba590cc99c8ad6cd1f57cfacdded112464c6e535bd59831317190d6e0ce0e9f3aacbb8aead6112a7905045b3ab1f3e5ecc2c82433'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -260,7 +260,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-
+  
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
@@ -296,4 +296,11 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  
+  config.omniauth :facebook,
+                  '234762927805217',
+                  '23754e462cfe856f9b7045026da77056',
+                   scope: "email",
+                   info_fields: "email,name",
+                   image_size: "large"
 end
