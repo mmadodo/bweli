@@ -1,5 +1,5 @@
 # # Create dummy catetories
-13.times do
+14.times do
   Category.create(
     name: Faker::Job.unique.field
    )
